@@ -6,7 +6,6 @@ import urllib.request
 import urllib.parse
 import json
 from lxml import etree
-from io import StringIO
 from os import path
 import tempfile
 # Todo: Format the code
@@ -18,8 +17,7 @@ def getRngDir(ver):
     schemas_path = "src/conf/schemas"
     url = 'https://gitlab.com/api/v4/projects/38286904/repository/tree?path={0}&ref={1}&per_page=50'.format(
         schemas_path, ver)
-    rngs = [i["path"] for i in json.load(
-        StringIO(urllib.request.urlopen(url).read().decode())) if '.rng' in i["path"]]
+    rngs = [i["path"] for i in json.load(urllib.request.urlopen(url)) if '.rng' in i["path"]]
     rngs_tmpdir = tempfile.mkdtemp(prefix='rngs-{0}-'.format(ver))
     for i in rngs:
         rng_url = "https://gitlab.com/api/v4/projects/38286904/repository/files/{0}/raw?ref={1}".format(
